@@ -1,0 +1,97 @@
+local monsters = game.Workspace.Monsters:GetChildren()
+local function onMonsterKilled(monster)
+   game.Players.LocalPlayer.leaderstats.Gold.Value = game.Players.LocalPlayer.leaderstats.Gold.Value + 1
+   end
+   for i, monster in ipairs(monsters) do
+     monster:Connect(function()
+        onMonsterKilled(monster)
+    end)
+end
+local raidMonsters = game.Workspace.Raid.Monsters:GetChildren()
+local function onRaidMonsterKilled(monster)
+    game.Players.LocalPlayer.leaderstats.Score.Value = game.Players.LocalPlayer.leaderstats.Score.Value + 1
+    end
+    for i, monster in ipairs(raidMonsters) do
+      monster:Connect(function()
+        onRaidMonsterKilled(monster)
+    end)
+end
+local bounties = game.Workspace.Bounties:GetChildren()
+local function onBountyKilled(bounty)
+   game.Players.LocalPlayer.leaderstats.Score.Value = game.Players.LocalPlayer.leaderstats.Score.Value + 1
+end
+for i, bounty in ipairs(bounties) do
+ bounty:Connect(function()
+        onBountyKilled(bounty)
+    end)
+end
+local farmingMonsters = game.Workspace.Farm.Monsters:GetChildren()
+local function onFarmingMonsterKilled(monster)
+    game.Players.LocalPlayer.leaderstats.Level.Value = game.Players.LocalPlayer.leaderstats.Level.Value + 1
+end
+for i, monster in ipairs(farmingMonsters) do
+   monster:Connect(function()
+        onFarmingMonsterKilled(monster)
+    end)
+end
+local items = game.Workspace.Items:GetChildren()
+local function onItemPickedUp(item)
+    print("Bạn đã nhặt được một item!")
+    end
+    for i, item in ipairs(items) do
+        item.Touched:Connect(function(hit)
+        local character = hit.Parent
+        local player = game.Players:GetPlayerFromCharacter(character)
+        if player then
+          onItemPickedUp(item)
+            item:Destroy()
+                end
+    end)
+end
+local farmingMonsters = game.Workspace.Farm.Monsters:GetChildren()
+local function onFarmingMonsterKilled(monster)
+    local dropBone = math.random() <= 0.5
+    if dropBone then
+        local bone = Instance.new("Part")
+        bone.Size = Vector3.new(1, 1, 1)
+        bone.Position = monster.Position
+         bone.Color = Color3.new(1, 1, 1)
+          bone.Anchored = true
+           bone.Parent = game.Workspace.Bones
+               end
+end
+for i, monster in ipairs(farmingMonsters) do
+   monster:Connect(function()
+        onFarmingMonsterKilled(monster)
+    end)
+end
+local newAttackSpeed = 2
+local playerCharacter = game.Players.LocalPlayer.Character
+if playerCharacter then
+    local weapon = playerCharacter:FindFirstChild("Weapon")
+        if weapon then
+        local attackSpeedValue = weapon:FindFirstChild("AttackSpeed")
+        if attackSpeedValue then
+                   attackSpeedValue.Value = newAttackSpeed
+        else
+                   print("Lỗi: Thuộc tính AttackSpeed không tìm thấy cho vũ khí.")
+        end
+    else
+        print("Lỗi: Không tìm thấy vũ khí.")
+    end
+else
+    print("Lỗi: Không tìm thấy nhân vật.")
+end
+local fruits = game.Workspace.Fruits:GetChildren()
+local function onFruitTouched(fruit)
+    local player = game.Players:GetPlayerFromCharacter(fruit.Parent)
+    if player then
+      player.leaderstats.Score.Value = player.leaderstats.Score.Value + 1
+           fruit:Destroy()
+    end
+end
+for i, fruit in ipairs(fruits) do
+    fruit.Touched:Connect(function(hit)
+        onFruitTouched(fruit)
+    end)
+end
